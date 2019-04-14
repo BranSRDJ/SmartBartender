@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creare cont</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+	<script> 
+function validare()								 
+{ 
+	var parola = document.forms["RegForm"]["parola"]; 
+	var parola2 = document.forms["RegForm"]["parola2"]; 
+	var nume = document.forms["RegForm"]["nume"]; 
+	var data = document.forms["RegForm"]["data"]; 
+	var email = document.forms["RegForm"]["email"]; 
+	if (nume.value == "")
+	{
+		window.alert("Nu ati introdus numele.");
+		return false;
+	}
+	if (data.value == "")
+	{
+		window.alert("Nu ati introdus data.");
+		return false;
+	}
+	if (email.value == "")
+	{
+		window.alert("Nu ati introdus email-ul.");
+		return false
+	}
+	if (email.value.indexOf("@", 0) < 0)				 
+	{ 
+		window.alert("Nu ati introdus un email valid."); 
+		return false; 
+	} 
+	if (email.value.indexOf(".", 0) < 0)				 
+	{ 
+		window.alert("Nu ati introdus un email valid."); 
+		return false; 
+	} 
+	if(parola.value == "")
+	{
+		window.alert("Nu ati introdus parola.");
+		return false
+	}
+	if(parola2.value == "")
+	{
+		window.alert("Nu ati confirmat parola.");
+		return false
+	}
+	if (parola.value != parola2.value)
+	{
+		window.alert("Parolele nu se potrivesc.");
+		return false;
+	}
+	return true;
+}</script> 
+  </head>
+  <body>
+<div class="grid-x grid-margin-x grid-padding-x">
+  <div class="cell small-4"></div>
+  <div class="cell auto">
+  <form name="RegForm" method="post" action="signup.php" onsubmit="return validare()">
+  <h4 class="text-center">Creare cont Smart Bartender</h4>
+    <label>Nume
+        <input type="text" name="nume" placeholder="Nume">
+    </label>
+  <div class="medium-6 cell">
+        <label>Data Nasterii
+          <input name="data" type="date">
+        </label>
+      </div>
+  <label>Email
+    <input type="text" name="email" placeholder="cineva@exemplu.ro">
+  </label>
+  <label>Parola
+    <input name="parola" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" aria-describedby="passwordHelpText" placeholder="Parola">
+  </label>
+  <label>Confirma parola
+    <input name="parola2" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" aria-describedby="passwordHelpText" placeholder="Confirma parola">
+  </label>
+  <p class="help-text" id="passwordHelpText">Parola trebuia sa aiba 8 caractere si sa includa 1 litera uppercase, 1 litera lowercase si 1 numar.</p>
+  <p><input  name="submit" type="submit" class="button expanded" value="Creare"></input></p>
+</form>
+  <form method="href" action="home.html">
+  <div class="grid-x grid-padding-x">
+  <div class="cell small-4"></div>
+</div>
+</form>
+  </div>
+  <div class="cell auto"></div>
+</div>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+	<script> 
+function validare()								 
+{ 
+	var nume = document.forms["ContactForm"]["nume"]; 
+	var email = document.forms["ContactForm"]["email"]; 
+	var mesaj = document.forms["ContactForm"]["mesaj"];
+	
+	if (nume.value == "")
+	{
+		window.alert("Nu ati introdus numele.");
+		return false;
+	}
+	if (email.value == "")
+	{
+		window.alert("Nu ati introdus email-ul.");
+		return false
+	}
+	if (email.value.indexOf("@", 0) < 0)				 
+	{ 
+		window.alert("Nu ati introdus un email valid."); 
+		return false; 
+	} 
+	if (email.value.indexOf(".", 0) < 0)				 
+	{ 
+		window.alert("Nu ati introdus un email valid."); 
+		return false; 
+	} 
+	if (mesaj.value == "")
+	{
+		window.alert("Nu ati introdus un mesaj.");
+		return false;
+	}
+	return true;
+}</script> 
+  </head>
+  <body>
+   <div class="grid-y medium-grid-frame">
+  <div class="cell medium-auto medium-cell-block-container">
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-10 medium-cell-block-y">
+		<div class="callout primary">
+		 <form name="ContactForm" method="post" action="contact1.php" onsubmit="return validare()">
+			<h4 class="text-center">Completati formularul</h4>
+    <div class="grid-x grid-padding-x">
+      <div class="medium-6 cell">
+        <label>Nume
+          <input type="text" name="nume" placeholder="Nume">
+        </label>
+      </div>
+      <div class="medium-6 cell">
+        <label>Email
+    <input  type="text" name="email" placeholder="cineva@exemplu.com">
+  </label>
+      </div>
+    </div>
+  <label> Mesaj
+    <textarea  name="mesaj" placeholder=".............&#10;........&#10;....." style="height:150px"></textarea>
+  </label>
+  <p><input name="submit" type="submit" class="button expanded" value="Trimite"></input></p>
+</form>	
+		</div>
+	  </div>
+    </div>
+  </div>
+</div>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
