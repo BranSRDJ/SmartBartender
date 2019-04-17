@@ -15,7 +15,14 @@ $result= mysqli_query($db,$sql);
 if (!$result)
  die('Invalid querry:' .mysqli_error($db));
  else 
- header("location: contact.html");
+ {
+	$message = 'Your message has been sent!';
+
+    echo "<SCRIPT type='text/javascript'> 
+        alert('$message');
+        window.location.replace('contact.html');
+    </SCRIPT>";
+ }
 
 echo "</br>".$sql;
 

@@ -92,7 +92,7 @@ function validare()
 		
 		<button type="button" class="btn btn-secondary" disabled><h5></h5></button>
 		<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Database operations</span>
+          <span>Manage Databases</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
           </a>
@@ -127,7 +127,43 @@ function validare()
               Manage Recipe-Ingredients
             </a>
           </li>
-          
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>View Databases</span>
+          <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+            <span data-feather="plus-circle"></span>
+          </a>
+        </h6>
+		  
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_user.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Users 
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_contact.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Contact
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_recipe.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Recipes
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_ingredient.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Ingredients
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_retingr.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Recipe-Ingredients
+            </a>
+          </li>
         </ul>
 		
       </div>
@@ -143,7 +179,7 @@ function validare()
         <h1 class="h1">Dashboard</h1>
 		
         </div>
-		 <h2>Contact</h2>
+		 <h2>Manage Contact</h2>
       
 
 <form id="ContactForm" name="ContactForm" method="post" action="">

@@ -115,47 +115,26 @@ function validare()
 
 <div class="card bg-light">
 <article class="card-body mx-auto" style="max-width: 400px;">
-	<h4 class="card-title mt-3 text-center">Create Account</h4>
-	<p class="text-center">Please fill out the form below to create your account.</p>
+	<h4 class="card-title mt-3 text-center">Log In</h4>
+	<p class="text-center">Please fill out the form below to log in to your account.</p>
 	<form name="RegForm" method="post" action="signup.php" onsubmit="return validare()">
-	<div class="form-group input-group">
-		<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-		 </div>
-		<input type="text" name="nume" placeholder="Name" class="form-control">
-    </div> <!-- form-group// -->
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
 		 </div>
         <input name="email" class="form-control" placeholder="Email address" type="email">
     </div> <!-- form-group// -->
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-calendar-alt"></i> </span>
-		</div>
-		<input class="form-control" name="data" type="date">
-    </div> <!-- form-group// -->	
+    	
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
         <input name="parola" type="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" aria-describedby="passwordHelpText" placeholder="Password">
-    </div> <!-- form-group// -->
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-		</div>
-        <input name="parola2" type="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" aria-describedby="passwordHelpText" placeholder="Confirm Password">
-		<small id="passwordHelpText" class="form-text text-muted">
-  Your password must be at least 8 characters long, must contain at least 1 uppercase letter, 1 lowercase letter and 1 number.
-</small>
-
     </div> <!-- form-group// -->                                      
     <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+        <button type="submit" class="btn btn-primary btn-block"> Log In  </button>
     </div> <!-- form-group// -->      
-    <p class="text-center">Have an account? <a href="login.html">Log In</a> </p>                                                                 
+    <p class="text-center">Don't have an account? <a href="signup.html">Create one.</a> </p>                                                                 
 </form>
 </article>
 </div> <!-- card.// -->

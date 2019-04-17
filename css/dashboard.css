@@ -1,9 +1,8 @@
 body {
   font-size: .875rem;
-  min-height: 75rem;
   padding-top: 4.5rem;
 }
-}
+
 
 .feather {
   width: 16px;
@@ -75,7 +74,7 @@ body {
 
 @media (min-width: 768px) {
   [role="main"] {
-    padding-top: 48px; /* Space for fixed navbar */
+    padding-top: 0px; /* Space for fixed navbar */
   }
 }
 
