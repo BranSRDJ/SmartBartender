@@ -23,35 +23,13 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <title>Smart Bartender</title>
 	
-	<script> 
-function reset()
-{
-	document.getElementById("ContactForm").reset();
-}
-function validare()								 
-{ 
-	var id_Reteta = document.forms["form1"]["id_Reteta"]; 
-	var denumire = document.forms["form1"]["denumire"]; 
-
-	
-	if (id_Reteta.value == "")
-	{
-		window.alert("Nu ati introdus id-ul retetei.");
-		return false;
-	}
-	if (denumire.value == "")
-	{
-		window.alert("Nu ati introdus denumirea retetei.");
-		return false
-	}
-	return true;
-}</script> 
 	
   <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
    
 <a id="TopMenuLink" href="topmenu.php"></a>
+	
 
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
@@ -77,9 +55,9 @@ function validare()
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="dash_reteta.php">
+            <a class="nav-link" href="dash_reteta.php">
               <span data-feather="shopping-cart"></span>
-              Manage Recipes <span class="sr-only">(current)</span>
+              Manage Recipes
             </a>
           </li>
           <li class="nav-item">
@@ -139,9 +117,9 @@ function validare()
             </a>
           </li>
 		  <li class="nav-item">
-            <a class="nav-link" href="dash_v_review.php?id=1">
+            <a class="nav-link active" href="dash_v_review.php?id=1">
               <span data-feather="bar-chart-2"></span>
-              View Reviews
+              View Reviews <span class="sr-only">(current)</span>
             </a>
           </li>
         </ul>
@@ -159,56 +137,100 @@ function validare()
         <h1 class="h1">Dashboard</h1>
 		
         </div>
-		 <h2>Manage Recipes</h2>
-    
+		 <h2>View Reviews</h2>
+      
 
-<form id="form1" name="form1" method="post" action="">
-  <table class="table" width="459" border="1" align="center">
-    <tr>
-      <?php error_reporting(0); ?>
-      <td width="126">ID </td>
-      <td width="171"><label>
-        <input size="35" name="id" type="text" id="id"  value="<?php 
- if($_POST["Search"]=="Search"){
-$db=mysqli_connect("localhost","root","");
+<?php
+
+$db=mysqli_connect("127.0.0.1","root","");
 mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_reteta where id ='". $_POST["id"]."'");
 
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["id"];
-}
-}
- ?>"/>
-      </label></td>
-      <td width="140"><input name="Search" type="submit" id="Search" value="Search" class="btn btn-warning"/>
-	  <button class="btn btn-secondary" onclick="reset()" value="Reset">Reset</button></td>
-    </tr>
-    <tr>
-      <td>Recipe Name</td>
-      <td colspan="2"><input size="35" name="denumire" type="text" id="denumire" value="<?php 
-if($_POST["Search"]=="Search"){
-$db=mysqli_connect("localhost","root","");
-mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_reteta where id ='". $_POST["id"]."'");
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["denumire"];
-}
-} ?>"/>
-          <label></label></td>
-    </tr>
-  </table>
-  <td>
-<br>
-  </td>  
+$id=$id_Reteta=$id_Utilizator=$like=$comentariu=$data="";
 
-  <table width="200" border="1" align="center">
-    <tr>
-      <td><input name="Save" type="submit" id="Save" value="Save Record" onclick ="return validare()" class="btn btn-success"/></td>
-      <td><input name="Update" type="submit" id="Update" value="Update Record" onclick ="return validare()" class="btn btn-primary"/></td>
-      <td><input name="Delete" type="submit" id="Delete" value="Delete Record" class="btn btn-danger"/></td>
-    </tr>
-  </table>
-</form>
+$start=0;
+$limit=6;
+$id=2;
+if(isset($_GET['id']))
+{
+$id=$_GET['id'];
+$start=($id-1)*$limit;
+}
+
+
+$sqlv="SELECT * FROM bar_review LIMIT $start, $limit"; 
+$resultv= mysqli_query($db,$sqlv);
+ 
+
+if (!$resultv)
+ die('Invalid querry:' .mysqli_error($db));
+ else 
+ {
+  echo "<table class='table' border=1 cellpadding=2>";
+  echo "<thead class='thead-dark'>
+		<tr><th>ID</th><th>Recipe ID</th><th>User ID</th><th>Liked</th><th>Comment</th><th>Date</th></tr>
+		</thead>";
+     while ($myrow=mysqli_fetch_array($resultv,MYSQLI_ASSOC))
+     {echo "<tr><td>";
+     echo $myrow["id"];
+      echo "</td><td>";
+	  echo $myrow["id_Reteta"];
+      echo "</td><td>";
+      echo $myrow["id_Utilizator"];
+      echo "</td><td>";
+      echo $myrow["nota"];
+      echo "</td><td>";
+      echo $myrow["comentariu"];
+      echo "</td><td>";
+      echo $myrow["data_Postarii"];
+	  echo "</td>";
+      }
+  echo "</table>";
+echo "<div class='mx-auto' style='width: 200px;'>";
+$rows= mysqli_num_rows(mysqli_query($db,"SELECT * FROM bar_review"));
+$total=ceil($rows/$limit);
+ echo "<nav aria-label='Page navigation example'>
+  <ul class='pagination'>
+    <li class='page-item'>";
+if($id>1)
+{
+	echo "<a class='page-link' href='?id=".($id-1)."' aria-label='Previous'>";
+	echo "<span aria-hidden='true'>&laquo;</span>
+      </a>
+    </li>";
+	#echo "<a href='?id=".($id-1)."' class='button'>PREVIOUS </a> ";
+}
+
+
+
+for($i=1;$i<=$total;$i++)
+{
+if($i==$id) { #echo "<li class='current'>".$i."</li>"; 
+ echo "<li class='page-item active'><a class='page-link' href='#'>".$i."</a></li>";
+
+}
+
+else { #echo "<li><a href='?id=".$i."'>".$i."</a></li>"; 
+ echo "<li class='page-item'><a class='page-link' href='?id=".$i."'>".$i."</a></li>";
+}
+}
+
+if($id!=$total)
+{
+echo "<li class='page-item'>
+      <a class='page-link' href='?id=".($id+1)."' aria-label='Next'>
+        <span aria-hidden='true'>&raquo;</span>
+      </a>
+    </li>";
+#echo "<a href='?id=".($id+1)."' class='button'> NEXT</a>";
+}
+
+echo "  </ul>
+</nav>";
+ }
+
+echo "</div>";
+?>
+
       
 
      
@@ -239,58 +261,3 @@ echo $rs["denumire"];
   </body>
 </html>
 
-<?php
-
-$db=mysqli_connect("localhost","root","");
-mysqli_select_db($db,"smart_bartender");
-
-$id = $_POST["id"];
-$id_Reteta = $_POST["id_Reteta"];
-$denumire = $_POST["denumire"];
-
-//Install Database Code
-
-//Save button Code
-if($_POST["Save"]=="Save Record"){
-mysqli_query($db,"insert into bar_reteta(id_Reteta,denumire)values('".$id_Reteta."','".$denumire."')");
-echo "<center>Save successful.</center>";
-}
-
-//Update button Code
-if($_POST["Update"]=="Update Record"){
-mysqli_query($db,"update bar_reteta set id_Reteta = '".$id_Reteta."', denumire = '".$denumire."' where id ='".$id."'");
-echo "<center>update successful.</center>";
-}
-
-//Delete button Code
-if($_POST["Delete"]=="Delete Record"){
-mysqli_query($db,"delete from bar_reteta where id = '".$id."'");
-echo "<center>delete successful.</center>";
-}
-
-//Search for code button
-if($_POST["Search"]=="Search"){
-$str = $_POST['id'];
-$length = strlen($str);
-if($length == 0){
-echo "<center>No input id: <br> If you want to view all list of database just input any id and click search button</center>";
-}else{
-$qry = mysqli_query($db,"select * from bar_reteta where id ='".$id."'");
-$qry2 = mysqli_query($db,"select * from bar_reteta");
-$num_rows = mysqli_num_rows($qry);
-if($num_rows == 0){
-echo "<center>No match id for: ".$_POST['id']." <br><br> Available record are the following.<br><br></center>";
-echo "ffff".$qry2;
-echo "aaaa".$qry;
-while($rs = mysqli_fetch_array($qry2,MYSQLI_ASSOC)){
-echo"<center>";
-echo "id: ".$rs["id"]." nume: ".$rs["nume"]." email: ".$rs["email"]." mesaj: ".$rs["mesaj"]." <br>";
-}
-}
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo"<center>";
-echo "id: ".$rs["id"]." nume: ".$rs["nume"]." email: ".$rs["email"]." mesaj: ".$rs["mesaj"]." <br>";
-}
-}
-}
-?>

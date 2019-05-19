@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	if (!isset($_SESSION["admin"]) or $_SESSION["admin"] == 0){
+		$message = 'You must log in as an Admin to access this page.';
+
+    echo "<SCRIPT type='text/javascript'> 
+        alert('$message');
+        window.location.replace('login.php');
+    </SCRIPT>";
+	}
+	
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -18,40 +30,12 @@ function reset()
 }
 </script> 
 	
+  <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
-    
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <span style="font-size: 30px; color: Dodgerblue;"><i class="fas fa-glass-cheers"></i>SmartBartender</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cocktail builder</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Register</a>
-		  <a class="dropdown-item" href="#">Log in</a>
-        </div>
-      </li>
-    </ul>
-    
-  </div>
-</nav>
+   
+<a id="TopMenuLink" href="topmenu.php"></a>
+	
 
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
@@ -67,13 +51,13 @@ function reset()
           <li class="nav-item">
             <a class="nav-link" href="dash_utilizator.php">
               <span data-feather="home"></span>
-             Manage Users</span>
+				Manage Users
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dash_contact.php">
               <span data-feather="file"></span>
-             Manage Contact  <span class="sr-only">(current)
+             Manage Contact
             </a>
           </li>
           <li class="nav-item">
@@ -91,10 +75,17 @@ function reset()
           <li class="nav-item">
             <a class="nav-link active" href="dash_retingr.php">
               <span data-feather="bar-chart-2"></span>
-              Manage Recipe-Ingredients  <span class="sr-only">(current)
+              Manage Recipe-Ingredients <span class="sr-only">(current)</span>
             </a>
           </li>
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_review.php">
+              <span data-feather="bar-chart-2"></span>
+              Manage Reviews
+            </a>
+          </li>
+          
+		  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>View Databases</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
@@ -104,7 +95,7 @@ function reset()
 		  <li class="nav-item">
             <a class="nav-link" href="dash_v_user.php?id=1">
               <span data-feather="bar-chart-2"></span>
-              View Users 
+              View Users
             </a>
           </li>
 		  <li class="nav-item">
@@ -131,6 +122,12 @@ function reset()
               View Recipe-Ingredients
             </a>
           </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_review.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Reviews
+            </a>
+          </li>
         </ul>
 		
       </div>
@@ -151,6 +148,7 @@ function reset()
 
 <form id="form1" name="RegForm" method="post">
   <table class="table" width="459" border="1" align="center">
+  <thead class='thead-dark'><tr><th colspan="3"></th></tr></thead>
     <tr>
        <?php error_reporting(0); ?>
       <td width="126">ID </td>
@@ -181,12 +179,12 @@ $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 //query
-$sql=mysqli_query($db,"SELECT id_Reteta, denumire FROM bar_reteta");
+$sql=mysqli_query($db,"SELECT id, denumire FROM bar_reteta");
 if(mysqli_num_rows($sql)){
-$select= '<select name="id_Retet" id="id_Retet" style="width: 100px;>';
+$select= '<select name="id_Reteta" id="id_Reteta" style="width: 100px;>';
 $select.='<option value="useless">more useless</option>';
 while($rs=mysqli_fetch_array($sql)){
-     $select.='<option value="'.$rs['id_Reteta'].'">'.$rs['denumire'].'</option>';
+     $select.='<option value="'.$rs['id'].'">'.$rs['denumire'].'</option>';
   }
 }
 $select.='</select>';
@@ -203,12 +201,12 @@ $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 //query
-$sql=mysqli_query($db,"SELECT id_Ingredient, denumire FROM bar_ingredient");
+$sql=mysqli_query($db,"SELECT id, denumire FROM bar_ingredient");
 if(mysqli_num_rows($sql)){
-$select= '<select name="id_Ingredien" id="id_Ingredien" style="width: 100px;>';
+$select= '<select name="id_Ingredient" id="id_Ingredient" style="width: 100px;>';
 $select.='<option value="useless">more useless</option>';
 while($rs=mysqli_fetch_array($sql)){
-     $select.='<option value="'.$rs['id_Ingredient'].'">'.$rs['denumire'].'</option>';
+     $select.='<option value="'.$rs['id'].'">'.$rs['denumire'].'</option>';
   }
 }
 $select.='</select>';
@@ -230,7 +228,21 @@ echo $select;
     </tr>
   </table>
 </form>
-      
+
+<?php
+
+$db=mysqli_connect("localhost","root","");
+mysqli_select_db($db,"smart_bartender");
+
+$id = $_POST["id"];
+$id_Reteta = $_POST["id_Reteta"];
+$id_Ingredient = $_POST["id_Ingredient"];
+
+echo $id;
+echo $id_Reteta;
+echo $id_Ingredient;
+
+?>
      
     </main>
    
@@ -265,20 +277,20 @@ $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 $id = $_POST["id"];
-$id_Retet = $_POST["id_Retet"];
-$id_Ingredien = $_POST["id_Ingredien"];
+$id_Reteta = $_POST["id_Reteta"];
+$id_Ingredient = $_POST["id_Ingredient"];
 
 
 
 //Save button Code
-if($_POST["Save"]=="Save Record"){
-mysqli_query($db,"INSERT INTO bar_reteta_ingrediente(id_Reteta,id_Ingredient) VALUES ('".$id_Retet."','".$id_Ingredien."')");
+if($_POST["Save"]=="Save Record"){	
+mysqli_query($db,"INSERT INTO bar_reteta_ingrediente(id_Reteta, id_Ingredient) VALUES ('".$id_Reteta."','".$id_Ingredient."')");
 echo "<center>Save successful.</center>";
 }
 
 //Update button Code
 if($_POST["Update"]=="Update Record"){
-mysqli_query($db,"update bar_reteta_ingrediente set id_Reteta = '".$id_Retet."', id_Ingredient = '".$id_Ingredien."' where id ='".$id."'");
+mysqli_query($db,"update bar_reteta_ingrediente set id_Reteta = '".$id_Reteta."', id_Ingredient = '".$id_Ingredient."' where id ='".$id."'");
 echo "<center>update successful.</center>";
 }
 

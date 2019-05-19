@@ -28,30 +28,14 @@ function reset()
 {
 	document.getElementById("ContactForm").reset();
 }
-function validare()								 
-{ 
-	var id_Reteta = document.forms["form1"]["id_Reteta"]; 
-	var denumire = document.forms["form1"]["denumire"]; 
-
-	
-	if (id_Reteta.value == "")
-	{
-		window.alert("Nu ati introdus id-ul retetei.");
-		return false;
-	}
-	if (denumire.value == "")
-	{
-		window.alert("Nu ati introdus denumirea retetei.");
-		return false
-	}
-	return true;
-}</script> 
+</script> 
 	
   <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
    
 <a id="TopMenuLink" href="topmenu.php"></a>
+	
 
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
@@ -77,9 +61,9 @@ function validare()
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="dash_reteta.php">
+            <a class="nav-link" href="dash_reteta.php">
               <span data-feather="shopping-cart"></span>
-              Manage Recipes <span class="sr-only">(current)</span>
+              Manage Recipes
             </a>
           </li>
           <li class="nav-item">
@@ -95,9 +79,9 @@ function validare()
             </a>
           </li>
 		  <li class="nav-item">
-            <a class="nav-link" href="dash_review.php">
+            <a class="nav-link active" href="dash_review.php">
               <span data-feather="bar-chart-2"></span>
-              Manage Reviews
+              Manage Reviews <span class="sr-only">(current)</span>
             </a>
           </li>
           
@@ -159,58 +143,101 @@ function validare()
         <h1 class="h1">Dashboard</h1>
 		
         </div>
-		 <h2>Manage Recipes</h2>
-    
+		 <h2>Manage Reviews</h2>
+      
 
-<form id="form1" name="form1" method="post" action="">
+<form id="form1" name="RegForm" method="post">
   <table class="table" width="459" border="1" align="center">
+  <thead class='thead-dark'><tr><th colspan="3"></th></tr></thead>
     <tr>
-      <?php error_reporting(0); ?>
+       <?php error_reporting(0); ?>
       <td width="126">ID </td>
-      <td width="171"><label>
-        <input size="35" name="id" type="text" id="id"  value="<?php 
- if($_POST["Search"]=="Search"){
+      <td width="70%"><label>
+        <input name="id" type="text" id="id" size="35"/>
+      </label></td>
+	  <td>
+	  <button class="btn btn-secondary" onclick="reset()" value="Reset">Reset</button></td>
+	  
+    </tr>
+	<tr>
+      <td>Recipe</td>
+      <td colspan="2"><label>
+		<?php
+//db connection
 $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_reteta where id ='". $_POST["id"]."'");
 
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["id"];
+//query
+$sql=mysqli_query($db,"SELECT id, denumire FROM bar_reteta");
+if(mysqli_num_rows($sql)){
+$select= '<select name="id_Reteta" id="id_Reteta" style="width: 100px;>';
+$select.='<option value="useless">more useless</option>';
+while($rs=mysqli_fetch_array($sql)){
+     $select.='<option value="'.$rs['id'].'">'.$rs['denumire'].'</option>';
+  }
 }
-}
- ?>"/>
+$select.='</select>';
+echo $select;
+?>
       </label></td>
-      <td width="140"><input name="Search" type="submit" id="Search" value="Search" class="btn btn-warning"/>
-	  <button class="btn btn-secondary" onclick="reset()" value="Reset">Reset</button></td>
     </tr>
     <tr>
-      <td>Recipe Name</td>
-      <td colspan="2"><input size="35" name="denumire" type="text" id="denumire" value="<?php 
-if($_POST["Search"]=="Search"){
+      <td>User</td>
+      <td colspan="2"><label>
+       <?php
+//db connection
 $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_reteta where id ='". $_POST["id"]."'");
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["denumire"];
+
+//query
+$sql=mysqli_query($db,"SELECT id, email FROM bar_utilizator");
+if(mysqli_num_rows($sql)){
+$select= '<select name="id_Utilizator" id="id_Utilizator" style="width: 200px;>';
+$select.='<option value="useless">more useless</option>';
+while($rs=mysqli_fetch_array($sql)){
+     $select.='<option value="'.$rs['id'].'">'.$rs['email'].'</option>';
+  }
 }
-} ?>"/>
-          <label></label></td>
+$select.='</select>';
+echo $select;
+?>
+      </label></td>
+	  
     </tr>
+	<tr>
+	<td>Like</td>
+	<td colspan="2">
+
+	<div class="custom-control custom-radio">
+		<input type="radio" class="custom-control-input" value="Y" id="Yes" name="liked">
+		<label class="custom-control-label" for="Yes">Yes</label>
+	</div>
+	<div class="custom-control custom-radio">
+		<input type="radio" class="custom-control-input" value="N" id="No" name="liked">
+		<label class="custom-control-label" for="No">No</label>
+	</div>
+	</td>
+	</tr>
+	<tr>
+	<td>Comment</td>
+	<td colspan="2">
+	<textarea name="comentariu" id="comentariu" cols="37"></textarea>
+	</td>
+	</tr>
   </table>
   <td>
 <br>
   </td>  
 
-  <table width="200" border="1" align="center">
+  <table width="100" border="1" align="center">
     <tr>
-      <td><input name="Save" type="submit" id="Save" value="Save Record" onclick ="return validare()" class="btn btn-success"/></td>
-      <td><input name="Update" type="submit" id="Update" value="Update Record" onclick ="return validare()" class="btn btn-primary"/></td>
+      <td><input name="Save" type="submit" class="btn btn-success" onclick="return validare()" id="Save" value="Save Record" /></td>
+	  <td><input name="Update" type="submit" id="Update" value="Update Record" onclick ="return validare()" class="btn btn-primary"/></td>
       <td><input name="Delete" type="submit" id="Delete" value="Delete Record" class="btn btn-danger"/></td>
     </tr>
   </table>
 </form>
-      
-
+    
      
     </main>
    
@@ -240,57 +267,34 @@ echo $rs["denumire"];
 </html>
 
 <?php
-
+	
 $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 $id = $_POST["id"];
 $id_Reteta = $_POST["id_Reteta"];
-$denumire = $_POST["denumire"];
+$id_Utilizator = $_POST["id_Utilizator"];
+$liked = $_POST["liked"];
+$comentariu = $_POST["comentariu"];
+$data = date("Y-m-d");
 
-//Install Database Code
 
 //Save button Code
 if($_POST["Save"]=="Save Record"){
-mysqli_query($db,"insert into bar_reteta(id_Reteta,denumire)values('".$id_Reteta."','".$denumire."')");
+mysqli_query($db,"INSERT INTO bar_review(id_Reteta, id_Utilizator, nota, comentariu, data_Postarii) VALUES ('".$id_Reteta."','".$id_Utilizator."','".$liked."','".$comentariu."', '".$data."')");
 echo "<center>Save successful.</center>";
 }
 
 //Update button Code
 if($_POST["Update"]=="Update Record"){
-mysqli_query($db,"update bar_reteta set id_Reteta = '".$id_Reteta."', denumire = '".$denumire."' where id ='".$id."'");
+mysqli_query($db,"update bar_review set id_Reteta = '".$id_Reteta."', id_Utilizator = '".$id_Utilizator."', nota = '".$liked."', comentariu = '".$comentariu."', data_Postarii = '".$data."' where id ='".$id."'");
 echo "<center>update successful.</center>";
 }
 
 //Delete button Code
 if($_POST["Delete"]=="Delete Record"){
-mysqli_query($db,"delete from bar_reteta where id = '".$id."'");
+mysqli_query($db,"delete from bar_review where id = '".$id."'");
 echo "<center>delete successful.</center>";
 }
 
-//Search for code button
-if($_POST["Search"]=="Search"){
-$str = $_POST['id'];
-$length = strlen($str);
-if($length == 0){
-echo "<center>No input id: <br> If you want to view all list of database just input any id and click search button</center>";
-}else{
-$qry = mysqli_query($db,"select * from bar_reteta where id ='".$id."'");
-$qry2 = mysqli_query($db,"select * from bar_reteta");
-$num_rows = mysqli_num_rows($qry);
-if($num_rows == 0){
-echo "<center>No match id for: ".$_POST['id']." <br><br> Available record are the following.<br><br></center>";
-echo "ffff".$qry2;
-echo "aaaa".$qry;
-while($rs = mysqli_fetch_array($qry2,MYSQLI_ASSOC)){
-echo"<center>";
-echo "id: ".$rs["id"]." nume: ".$rs["nume"]." email: ".$rs["email"]." mesaj: ".$rs["mesaj"]." <br>";
-}
-}
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo"<center>";
-echo "id: ".$rs["id"]." nume: ".$rs["nume"]." email: ".$rs["email"]." mesaj: ".$rs["mesaj"]." <br>";
-}
-}
-}
 ?>

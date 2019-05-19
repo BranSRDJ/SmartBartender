@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	if (!isset($_SESSION["admin"]) or $_SESSION["admin"] == 0){
+		$message = 'You must log in as an Admin to access this page.';
+
+    echo "<SCRIPT type='text/javascript'> 
+        alert('$message');
+        window.location.replace('login.php');
+    </SCRIPT>";
+	}
+	
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,40 +63,11 @@ function validare()
 	return true;
 }</script> 
 	
+ <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
-    
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <span style="font-size: 30px; color: Dodgerblue;"><i class="fas fa-glass-cheers"></i>SmartBartender</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cocktail builder</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Register</a>
-		  <a class="dropdown-item" href="#">Log in</a>
-        </div>
-      </li>
-    </ul>
-    
-  </div>
-</nav>
+   
+<a id="TopMenuLink" href="topmenu.php"></a>
 
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
@@ -100,13 +83,13 @@ function validare()
           <li class="nav-item">
             <a class="nav-link" href="dash_utilizator.php">
               <span data-feather="home"></span>
-             Manage Users</span>
+				Manage Users
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dash_contact.php">
               <span data-feather="file"></span>
-             Manage Contact 
+             Manage Contact
             </a>
           </li>
           <li class="nav-item">
@@ -118,7 +101,7 @@ function validare()
           <li class="nav-item">
             <a class="nav-link active" href="dash_ingredient.php">
               <span data-feather="users"></span>
-              Manage Ingredients  <span class="sr-only">(current)
+              Manage Ingredients <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
@@ -127,7 +110,14 @@ function validare()
               Manage Recipe-Ingredients
             </a>
           </li>
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_review.php">
+              <span data-feather="bar-chart-2"></span>
+              Manage Reviews
+            </a>
+          </li>
+          
+		  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>View Databases</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
@@ -137,7 +127,7 @@ function validare()
 		  <li class="nav-item">
             <a class="nav-link" href="dash_v_user.php?id=1">
               <span data-feather="bar-chart-2"></span>
-              View Users 
+              View Users
             </a>
           </li>
 		  <li class="nav-item">
@@ -162,6 +152,12 @@ function validare()
             <a class="nav-link" href="dash_v_retingr.php?id=1">
               <span data-feather="bar-chart-2"></span>
               View Recipe-Ingredients
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_review.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Reviews
             </a>
           </li>
         </ul>
@@ -203,20 +199,6 @@ echo $rs["id"];
       </label></td>
       <td width="140"><input name="Search" type="submit" id="Search" value="Search" class="btn btn-warning"/>
 	  <button class="btn btn-secondary" onclick="reset()" value="Reset">Reset</button></td>
-    </tr>
-    <tr>
-      <td>Ingredient ID</td>
-      <td colspan="2"><label>
-        <input size="35" name="id_Ingredient" type="text" id="id_Ingredient" value="<?php 
-if($_POST["Search"]=="Search"){
-$db=mysqli_connect("localhost","root","");
-mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_ingredient where id ='". $_POST["id"]."'");
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["id_Ingredient"];
-}
-} ?>"/>
-      </label></td>
     </tr>
     <tr>
       <td>Ingredient Name</td>
@@ -276,7 +258,6 @@ $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 $id = $_POST["id"];
-$id_Ingredient = $_POST["id_Ingredient"];
 $denumire = $_POST["denumire"];
 
 
@@ -284,13 +265,13 @@ $denumire = $_POST["denumire"];
 
 //Save button Code
 if($_POST["Save"]=="Save Record"){
-mysqli_query($db,"insert into bar_ingredient(id_Ingredient,denumire)values('".$id_Ingredient."','".$denumire."')");
+mysqli_query($db,"insert into bar_ingredient(denumire)values('".$denumire."')");
 echo "<center>Save successful.</center>";
 }
 
 //Update button Code
 if($_POST["Update"]=="Update Record"){
-mysqli_query($db,"update bar_ingredient set id_Ingredient ='".$id_Ingredient."',denumire ='".$denumire."' where id ='".$id."'");
+mysqli_query($db,"update bar_ingredient set denumire ='".$denumire."' where id ='".$id."'");
 echo "<center>update successful.</center>";
 }
 

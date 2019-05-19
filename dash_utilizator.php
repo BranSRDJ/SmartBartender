@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	if (!isset($_SESSION["admin"]) or $_SESSION["admin"] == 0){
+		$message = 'You must log in as an Admin to access this page.';
+
+    echo "<SCRIPT type='text/javascript'> 
+        alert('$message');
+        window.location.replace('login.php');
+    </SCRIPT>";
+	}
+	
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,13 +34,7 @@ function validare()
 	var nume = document.forms["RegForm"]["nume"]; 
 	var data = document.forms["RegForm"]["data_Nasterii"]; 
 	var email = document.forms["RegForm"]["email"]; 
-	var id = document.forms["RegForm"]["id_Utilizator"]; 
 	var tip = document.forms["RegForm"]["tip_Utilizator"]; 
-	if (id_Utilizator.value == "")
-	{
-		window.alert("Nu ati introdus id-ul utilizatorului.");
-		return false;
-	}
 	if (tip_Utilizator.value == "")
 	{
 		window.alert("Nu ati introdus tipul utilizatorului.");
@@ -67,41 +73,13 @@ function validare()
 	return true;
 }</script> 
 	
+  <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
+   
+<a id="TopMenuLink" href="topmenu.php"></a>
     
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <span style="font-size: 30px; color: Dodgerblue;"><i class="fas fa-glass-cheers"></i>SmartBartender</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cocktail builder</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Register</a>
-		  <a class="dropdown-item" href="#">Log in</a>
-        </div>
-      </li>
-    </ul>
-    
-  </div>
-</nav>
-
+	
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
@@ -116,7 +94,7 @@ function validare()
           <li class="nav-item">
             <a class="nav-link active" href="dash_utilizator.php">
               <span data-feather="home"></span>
-             Manage Users <span class="sr-only">(current)</span>
+				Manage Users <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
@@ -143,7 +121,14 @@ function validare()
               Manage Recipe-Ingredients
             </a>
           </li>
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_review.php">
+              <span data-feather="bar-chart-2"></span>
+              Manage Reviews
+            </a>
+          </li>
+          
+		  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>View Databases</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
@@ -153,7 +138,7 @@ function validare()
 		  <li class="nav-item">
             <a class="nav-link" href="dash_v_user.php?id=1">
               <span data-feather="bar-chart-2"></span>
-              View Users 
+              View Users
             </a>
           </li>
 		  <li class="nav-item">
@@ -178,6 +163,12 @@ function validare()
             <a class="nav-link" href="dash_v_retingr.php?id=1">
               <span data-feather="bar-chart-2"></span>
               View Recipe-Ingredients
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_review.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Reviews
             </a>
           </li>
         </ul>
@@ -220,20 +211,6 @@ echo $rs["id"];
       <td width="140"><input name="Search" type="submit" id="Search" value="Search" class="btn btn-warning"/>
 	  <button class="btn btn-secondary" onclick="reset()" value="Reset">Reset</button></td>
 	  
-    </tr>
-    <tr>
-      <td>User ID</td>
-      <td colspan="2"><label>
-        <input name="id_Utilizator" type="text" id="id_Utilizator" size="35" value="<?php 
-if($_POST["Search"]=="Search"){
-$db=mysqli_connect("localhost","root","");
-mysqli_select_db($db,"smart_bartender");
-$qry = mysqli_query($db,"select * from bar_utilizator where id ='". $_POST["id"]."'");
-while($rs = mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-echo $rs["id_Utilizator"];
-}
-} ?>"/>
-      </label></td>
     </tr>
     <tr>
       <td>User Type</td>
@@ -311,7 +288,6 @@ echo $rs["data_Nasterii"];
   </table>
 </form>
       
-
      
     </main>
    
@@ -346,24 +322,24 @@ $db=mysqli_connect("localhost","root","");
 mysqli_select_db($db,"smart_bartender");
 
 $id = $_POST["id"];
-$id_Utilizator = $_POST["id_Utilizator"];
 $tip_Utilizator = $_POST["tip_Utilizator"];
 $nume = $_POST["nume"];
 $email = $_POST["email"];
 $parola = $_POST["parola"];
 $data_Nasterii = $_POST["data_Nasterii"];
 
+
 //Install Database Code
 
 //Save button Code
 if($_POST["Save"]=="Save Record"){
-mysqli_query($db,"insert into bar_utilizator(id_Utilizator,tip_Utilizator,nume,email,parola,data_Nasterii)values('".$id_Utilizator."','".$tip_Utilizator."','".$nume."','".$email."','".$parola."','".$data_Nasterii."')");
+mysqli_query($db,"insert into bar_utilizator(tip_Utilizator,nume,email,parola,data_Nasterii)values('".$tip_Utilizator."','".$nume."','".$email."','".$parola."','".$data_Nasterii."')");
 echo "<center>Save successful.</center>";
 }
 
 //Update button Code
 if($_POST["Update"]=="Update Record"){
-mysqli_query($db,"update bar_utilizator set id_Utilizator = '".$id_Utilizator."', tip_Utilizator = '".$tip_Utilizator."', nume='".$nume."',email ='".$email."',parola='".$parola."', data_Nasterii ='".$data_Nasterii."' where id ='".$id."'");
+mysqli_query($db,"update bar_utilizator set tip_Utilizator = '".$tip_Utilizator."', nume='".$nume."',email ='".$email."',parola='".$parola."', data_Nasterii ='".$data_Nasterii."' where id ='".$id."'");
 echo "<center>update successful.</center>";
 }
 

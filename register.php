@@ -61,51 +61,11 @@ function validare()
 	}
 	return true;
 }</script> 
-
+ <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
-    
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <span style="font-size: 30px; color: Dodgerblue;"><i class="fas fa-glass-cheers"></i>SmartBartender</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cocktail builder</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="contact.html">Contact</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="signup.html">Register</a>
-		  <a class="dropdown-item" href="login.html">Log in</a>
-        </div>
-      </li>
-    </ul>
-    <form class="form-inline">
-	<button class="btn btn-outline-success mb-2" type="submit">Search</button>
-	<div class="input-group mb-2 mr-sm-2">
-	
-	</div>
-	<div class="form-check mb-2 mr-sm-2">
-		<button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Dashboard</button>
-	</div>
-
-  
-</form>
-  </div>
-</nav>
+   
+<a id="TopMenuLink" href="topmenu.php"></a>
 
  
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
@@ -117,7 +77,7 @@ function validare()
 <article class="card-body mx-auto" style="max-width: 400px;">
 	<h4 class="card-title mt-3 text-center">Create Account</h4>
 	<p class="text-center">Please fill out the form below to create your account.</p>
-	<form name="RegForm" method="post" action="signup.php" onsubmit="return validare()">
+	<form name="RegForm" method="post" action="signup_f.php" onsubmit="return validare()">
 	<div class="form-group input-group">
 		<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>

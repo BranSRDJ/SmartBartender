@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	if (!isset($_SESSION["admin"]) or $_SESSION["admin"] == 0){
+		$message = 'You must log in as an Admin to access this page.';
+
+    echo "<SCRIPT type='text/javascript'> 
+        alert('$message');
+        window.location.replace('login.php');
+    </SCRIPT>";
+	}
+	
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,40 +24,12 @@
     <title>Smart Bartender</title>
 	
 	
+  <script src="js/menu.js" type="text/javascript"></script>
   </head>
   <body>
-    
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <span style="font-size: 30px; color: Dodgerblue;"><i class="fas fa-glass-cheers"></i>SmartBartender</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cocktail builder</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Account
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Register</a>
-		  <a class="dropdown-item" href="#">Log in</a>
-        </div>
-      </li>
-    </ul>
-    
-  </div>
-</nav>
+   
+<a id="TopMenuLink" href="topmenu.php"></a>
+	
 
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
@@ -88,6 +72,12 @@
               Manage Recipe-Ingredients
             </a>
           </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_review.php">
+              <span data-feather="bar-chart-2"></span>
+              Manage Reviews
+            </a>
+          </li>
           
 		  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>View Databases</span>
@@ -99,7 +89,7 @@
 		  <li class="nav-item">
             <a class="nav-link" href="dash_v_user.php?id=1">
               <span data-feather="bar-chart-2"></span>
-              View Users 
+              View Users
             </a>
           </li>
 		  <li class="nav-item">
@@ -126,7 +116,12 @@
               View Recipe-Ingredients
             </a>
           </li>
-		  
+		  <li class="nav-item">
+            <a class="nav-link" href="dash_v_review.php?id=1">
+              <span data-feather="bar-chart-2"></span>
+              View Reviews
+            </a>
+          </li>
         </ul>
 		
       </div>
@@ -172,13 +167,11 @@ if (!$resultv)
  {
   echo "<table class='table' border=1 cellpadding=2>";
   echo "<thead class='thead-dark'>
-		<tr><th>ID</th><th><b>Ingredient ID</th><th>Recipe Name</th></tr>
+		<tr><th>ID</th><th>Ingredient Name</th></tr>
 		</thead>";
      while ($myrow=mysqli_fetch_array($resultv,MYSQLI_ASSOC))
      {echo "<tr><td>";
      echo $myrow["id"];
-      echo "</td><td>";
-      echo $myrow["id_Ingredient"];
       echo "</td><td>";
       echo $myrow["denumire"];
 	  echo "</td>";

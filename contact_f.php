@@ -20,7 +20,7 @@ if (!$result)
 
     echo "<SCRIPT type='text/javascript'> 
         alert('$message');
-        window.location.replace('contact.html');
+        window.location.replace('contact.php');
     </SCRIPT>";
  }
 
